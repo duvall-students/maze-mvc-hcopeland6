@@ -1,7 +1,6 @@
 package application;
 
 import java.awt.Point;
-
 import searches.BFS;
 import searches.DFS;
 import searches.Greedy;
@@ -9,7 +8,6 @@ import searches.Magic;
 import searches.RandomWalk;
 
 public class MazeController {
-
 	/* 
 	 * Logic of the program
 	 */
@@ -19,8 +17,9 @@ public class MazeController {
 	private DFS dfs;
 	private RandomWalk rand;
 	private Magic magic;
-	private String search = "";		// This string tells which algorithm is currently chosen.  Anything other than 
+	private String search = "";	// This string tells which algorithm is currently chosen.  Anything other than 
 	// the implemented search class names will result in no search happening.
+	
 
 	// Where to start and stop the search
 	private Point start;
@@ -31,16 +30,42 @@ public class MazeController {
 	
 	private MazeDisplay md;
 
-	
-	public MazeController(int numRows, int numColumns) {
+	public MazeController(int num_rows, int num_columns, MazeDisplay mazeDisplay) {
 		start = new Point(1,1);
-		goal = new Point(numRows-2, numColumns-2);
-		maze = new Maze(numRows, numColumns);
+		goal = new Point(num_rows-2, num_columns-2);
+		
+		maze = new Maze(num_rows, num_columns);
+		md = mazeDisplay;
+
 	}
 	
-	public int getCellState(Point position) {
-		return maze.get(position);
+	
+	
+
+	/*
+	 * Re-create the maze from scratch.
+	 * When this happens, we should also stop the search.
+	 */
+	public void newMaze() {
+		maze.createMaze(maze.getNumRows(),maze.getNumCols());
+		search = "";
+		md.redraw();
 	}
+	
+	/*
+	 * Does a step in the search only if not paused.
+	 */
+	public void step(double elapsedTime){
+		if(!md.getPaused()) {
+			doOneStep(elapsedTime);
+		}
+	}
+	
+	public Point getMazeDimensions(int num_rows, int num_columns) {
+		return new Point(num_rows, num_columns);
+	}
+
+	
 	
 	public void startSearch(String searchType) {
 		maze.reColorMaze();
@@ -56,10 +81,14 @@ public class MazeController {
 		magic = new Magic(maze, start, goal);
 	}
 	
+	public int getCellState(Point position) {
+		return maze.get(position);
+	}
+	
 	/*
 	 * Does a step in the search regardless of pause status
 	 */
-	public void doOneStep(){
+	public void doOneStep(double elapsedTime){
 		if(search.equals("DFS")) dfs.step();
 		else if (search.equals("BFS")) bfs.step();
 		else if (search.equals("Greedy")) greedy.step();
@@ -67,13 +96,7 @@ public class MazeController {
 		else if (search.equals("Magic")) magic.step();
 		md.redraw();
 	}
-	
-	public void newMaze() {
-		maze.createMaze(maze.getNumRows(),maze.getNumCols());
-		search = "";
-		md.redraw();
-	}
-	
-	
-	
+
+
+
 }

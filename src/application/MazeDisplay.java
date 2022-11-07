@@ -66,7 +66,7 @@ public class MazeDisplay extends Application {
 		// Initializing logic state
 		int numRows = NUM_ROWS;
 		int numColumns = NUM_COLUMNS;
-		mc = new MazeController(numRows, numColumns);
+		mc = new MazeController(numRows, numColumns, this);
 
 		
 		// Initializing the gui
@@ -76,7 +76,7 @@ public class MazeDisplay extends Application {
 		stage.show();
 
 		// Makes the animation happen.  Will call "step" method repeatedly.
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(MILLISECOND_DELAY));
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> mc.step(MILLISECOND_DELAY));
 		Timeline animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
@@ -165,10 +165,6 @@ public class MazeDisplay extends Application {
 		return searches;
 	}
 
-	public Point getMazeDimensions() {
-		return new Point(NUM_ROWS, NUM_COLUMNS);
-	}
-
 	/*
 	 * Setup the maze part for drawing. In particular,
 	 * make the mirrorMaze.
@@ -186,8 +182,6 @@ public class MazeDisplay extends Application {
 		}
 		return drawing;
 	}
-	
-
 
 	/*
 	 * Toggle the pause button
@@ -223,16 +217,9 @@ public class MazeDisplay extends Application {
 		}
 	}
 	
-	/*
-	 * Does a step in the search only if not paused.
-	 */
-	public void step(double elapsedTime){
-		if(!paused) {
-			mc.doOneStep(elapsedTime);
-		}
+	public boolean getPaused() {
+		return paused;
 	}
-
-
 
 	public static void main(String[] args) {
 		launch(args);
