@@ -6,6 +6,7 @@ import searches.DFS;
 import searches.Greedy;
 import searches.Magic;
 import searches.RandomWalk;
+import searches.SearchFactory;
 
 public class MazeController {
 	/* 
@@ -29,6 +30,8 @@ public class MazeController {
 	private Maze maze;
 	
 	private MazeDisplay md;
+	
+	//private SearchFactory searchFactory;
 
 	public MazeController(int num_rows, int num_columns, MazeDisplay mazeDisplay) {
 		start = new Point(1,1);

@@ -10,24 +10,15 @@ import java.util.Queue;
 
 import application.Maze;
 
-public class BFS{	
+public class BFS extends SearchAlgorithm{	
 
 	// Keeps up with the child-parent trail so we can recreate the chosen path
 	HashMap<Point,Point> childParent;
 
-	private Maze maze;					// The maze being solved
-	private Point goal;					// The goal Point - will let us know when search is successful
-	private Collection<Point> data;		// Data structure used to keep "fringe" points
-	private boolean searchOver = false;	// Is search done?
-	private boolean searchResult = false;	// Was it successful?
-	private Point current;				// Current point being explored
-
+	
 
 	public BFS(Maze mazeBlocks, Point startPoint, Point goalPoint){
-		maze = mazeBlocks;
-		goal = goalPoint;
-		current = startPoint;
-		maze.markPath(current);
+		super(mazeBlocks, startPoint, goalPoint);
 		data = new LinkedList<>();
 		data.add(startPoint);
 		childParent = new HashMap<>();
